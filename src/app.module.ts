@@ -1,34 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-
-import databaseConfig from './database/config/db.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from './database/ormConfigService';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { TypeOrmDS } from './database/datasource';
+import { UsersModule } from './users/users.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [
-        databaseConfig
-      ],
-      envFilePath: ['.env']
-    }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-      dataSourceFactory: async (options: DataSourceOptions) => {
-        try {
-          return new DataSource(options).initialize();
-        } catch (error) {
-          
-        }        
-      }
-    })
+    TypeOrmModule.forRoot(TypeOrmDS),
+    UsersModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
