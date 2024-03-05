@@ -24,10 +24,10 @@ export class UsersService {
       where: [{ email }, { phoneNumber }],
       select: { email: true, phoneNumber: true },
     });
-    return user;
+    return user; 
   }
 
-  findAll() {
+  findAllPaginated() {
     return `This action returns all users`;
   }
 
