@@ -1,0 +1,11 @@
+@baseUrl=http://localhost:3001
+
+POST {{baseUrl}}/auth
+Content-Type: 'application/json'
+
+{
+  "email": "ravi-ranjan@mail.com",
+  "phoneNumber": "8296677889",
+  "name": "Someone",
+  "password": "password"
+}

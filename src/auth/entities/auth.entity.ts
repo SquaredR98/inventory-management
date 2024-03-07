@@ -8,7 +8,7 @@ export class Auth extends BaseEntity {
   id: string;
 
   @Column()
-  userId: string;
+  authId: string;
 
   @Column()
   password: string;
