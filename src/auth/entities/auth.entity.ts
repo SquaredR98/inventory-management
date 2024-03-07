@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { BaseEntity } from "../../database/base.entity";
+import { BaseEntity } from "../../database/base-entity";
 import { User } from "../../users/entities/user.entity";
 
 @Entity({ name: 'Auth' })

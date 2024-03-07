@@ -7,12 +7,12 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'ravi1234',
   database: process.env.DB_NAME || 'postgres-new',
-  synchronize: true,
+  synchronize: false,
   bigNumberStrings: true,
   multipleStatements: true,
   logging: true,
   entities: ['**/*.entity{ .ts,.js}'],
-  migrations: ['dist/db/migrations/*{.ts,.js}'],
+  migrations: ['dist/database/migrations/*{.ts,.js}'],
   migrationsRun: true,
 };
 

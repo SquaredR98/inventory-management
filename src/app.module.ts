@@ -8,7 +8,6 @@ import { LoggerModule } from './logger/logger.module';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { Auth } from './auth/entities/auth.entity';
-import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 
 @Module({
@@ -18,7 +17,6 @@ import { RolesModule } from './roles/roles.module';
     UsersModule,
     LoggerModule,
     AuthModule,
-    PermissionsModule,
     RolesModule,
   ],
   controllers: [AppController],

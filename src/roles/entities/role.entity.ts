@@ -1,5 +1,5 @@
 import { Column, PrimaryGeneratedColumn } from "typeorm";
-import { BaseEntity } from "../../database/base.entity";
+import { BaseEntity } from "../../database/base-entity";
 
 export class Roles extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
