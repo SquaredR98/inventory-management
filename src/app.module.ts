@@ -9,10 +9,15 @@ import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { Auth } from './auth/entities/auth.entity';
 import { RolesModule } from './roles/roles.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(dataSourceOptions),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => dataSourceOptions,
+    }),
     TypeOrmModule.forFeature([User, Auth]),
     UsersModule,
     LoggerModule,

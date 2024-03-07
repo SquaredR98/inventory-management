@@ -1,4 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { AuthSubscriber } from '../auth/auth.subscribers';
 
 export const dataSourceOptions: DataSourceOptions = {
   type: (process.env.TYPE as any) ?? 'postgres',
@@ -7,10 +8,11 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'ravi1234',
   database: process.env.DB_NAME || 'postgres-new',
-  synchronize: false,
+  synchronize: true,
   bigNumberStrings: true,
   multipleStatements: true,
   logging: true,
+  subscribers: [AuthSubscriber],
   entities: ['**/*.entity{ .ts,.js}'],
   migrations: ['dist/database/migrations/*{.ts,.js}'],
   migrationsRun: true,

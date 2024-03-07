@@ -18,7 +18,14 @@ export class AuthService {
   async addUser(createAuthDto: CreateAuthDto) {
     const { name, email, phoneNumber, password } = createAuthDto;
     let savedAuthData: Auth, savedUserData: User;
+    const date: Date = new Date();
+    const authId =
+      'IM_USER_' +
+      date.toISOString().slice(0, 10).split('-').join('') +
+      '-' +
+      date.toISOString().slice(11, 23).split(':').join('').split('.').join('');
     const dataToBeSavedInAuth: Auth = {
+      authUserId: authId,
       password,
     } as Auth;
 

@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "../../database/base-entity";
 import { User } from "../../users/entities/user.entity";
+import { Exclude } from "class-transformer";
 
 @Entity({ name: 'Auth' })
 export class Auth extends BaseEntity {
@@ -8,7 +9,7 @@ export class Auth extends BaseEntity {
   id: string;
 
   @Column()
-  authId: string;
+  authUserId: string;
 
   @Column()
   password: string;
@@ -25,7 +26,7 @@ export class Auth extends BaseEntity {
   @Column({ type: "date", nullable: true })
   lastLogin: Date;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @OneToOne(() => User, (user: User) => user.auth)
+  @Exclude()
   user: User
 }
