@@ -39,16 +39,17 @@ export class RolesService {
     createSuperAdminRole();
   }
 
-  async create(createRoleDto: CreateRoleDto) {
+  async create(createRoleDto: CreateRoleDto, ip: string): Promise<Roles> {
     const { name, description } = createRoleDto;
     try {
-      await this.rolesRepository.save({
+      const response = await this.rolesRepository.save({
         name,
         description,
-        value: name.toLowerCase(),
+        value: name.split(' ').join('_').toUpperCase(),
+        ipUsed: ip,
       });
 
-      return 'Role Added Successfully';
+      return response;
     } catch (error) {
       throw error;
     }
@@ -58,8 +59,10 @@ export class RolesService {
     return await this.rolesRepository.findOne({ where: { name } });
   }
 
-  findAll() {
-    return `This action returns all roles`;
+  async findAll() {
+    return await this.rolesRepository.find({
+      select: ['name', 'description', 'value', 'updatedAt', 'createdAt'],
+    });
   }
 
   findOne(id: number) {
@@ -70,7 +73,7 @@ export class RolesService {
     return `This action updates a #${id} role`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  remove(id: string) {
+    return this.rolesRepository.delete(id);
   }
 }

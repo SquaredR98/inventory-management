@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3001
+
+
+###
+POST {{baseUrl}}/roles
+Content-Type: application/json
+
+{
+  "name": "Manager",
+  "description": "This role signifies the managerial authority of a user allowing user to have some access not all"
+}
+
+###
+DELETE {{baseUrl}}/roles/85f51f36-4740-4dc4-b127-9dd1dff78d87
+Content-Type: application/json

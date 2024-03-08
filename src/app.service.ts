@@ -20,8 +20,6 @@ export class AppService {
         where: { email: 'admin@admin.com' },
         relations: ['auth', 'auth.role']
       });
-      Logger.log({adminUser});
-
       if (adminUser) {
         Logger.log('Admin exists avoiding admin creation', 'AppModule');
       } else {
@@ -41,7 +39,7 @@ export class AppService {
             .split('.')
             .join('');
         const adminAuthData = await authRepository.save({
-          authUserId: authId,
+          authId,
           password: 'password',
           role
         });

@@ -6,7 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  UnprocessableEntityException,
+  ConflictException,
+  Ip,
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
@@ -17,17 +18,17 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
-  async create(@Body() createRoleDto: CreateRoleDto) {
-    const { name, description } = createRoleDto;
+  async create(@Body() createRoleDto: CreateRoleDto, @Ip() ip: string) {
+    const { name } = createRoleDto;
 
     const roleAvailable = await this.rolesService.findRoleByName(name);
 
     if (roleAvailable)
-      throw new UnprocessableEntityException(
+      throw new ConflictException(
         'Role already available by the name provided',
       );
 
-    return this.rolesService.create(createRoleDto);
+    return this.rolesService.create(createRoleDto, ip);
   }
 
   @Get()
@@ -47,6 +48,6 @@ export class RolesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.rolesService.remove(+id);
+    return this.rolesService.remove(id);
   }
 }

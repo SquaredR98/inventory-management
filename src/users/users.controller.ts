@@ -24,13 +24,6 @@ export class UsersController {
       email,
       phoneNumber,
     });
-
-    if (user)
-      throw new HttpException(
-        'User already exist with the provided Email or Phone Number',
-        HttpStatus.CONFLICT,
-      );
-
     return this.usersService.create(createUserDto);
   }
 
@@ -41,7 +34,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')

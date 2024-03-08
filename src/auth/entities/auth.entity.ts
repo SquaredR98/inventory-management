@@ -6,7 +6,7 @@ import { Roles } from "../../roles/entities/role.entity";
 @Entity({ name: 'Auth' })
 export class Auth extends BaseEntity {
   @Column()
-  authUserId: string;
+  authId: string;
 
   @Column()
   password: string;
@@ -14,7 +14,7 @@ export class Auth extends BaseEntity {
   @Column({ nullable: true })
   allowedIp: string;
 
-  @Column("text", {array: true, nullable: true})
+  @Column("text", {array: true, default: []})
   previousIps: string[];
 
   @Column({ nullable: true })
@@ -22,6 +22,9 @@ export class Auth extends BaseEntity {
 
   @Column({ type: "date", nullable: true })
   lastLogin: Date;
+
+  @Column("text", { array: true, default: [] })
+  permissions: string[];
 
   @OneToOne(() => User, (user: User) => user.auth)
   user: User

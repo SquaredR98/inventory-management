@@ -25,7 +25,7 @@ export class AuthService {
       '-' +
       date.toISOString().slice(11, 23).split(':').join('').split('.').join('');
     const dataToBeSavedInAuth: Auth = {
-      authUserId: authId,
+      authId,
       password,
     } as Auth;
 
@@ -52,11 +52,39 @@ export class AuthService {
   }
 
   async findOne(id: string) {
-    return await this.authRepository.findOne({ where: { authUserId: id } });
+    return await this.authRepository.findOne({
+      where: { authId: id },
+      relations: { user: true, role: true },
+    });
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  async update(id: string, updateAuthDto: UpdateAuthDto): Promise<any> {
+    const updateResponse = await this.authRepository.update(id, {
+      ...updateAuthDto,
+    });
+    return updateResponse;
+  }
+
+  async updateAuthIpsAndDevice(
+    id: string,
+    data: { ipUsed: string },
+  ): Promise<any> {
+    let { previousIps }: { previousIps: string[] } =
+      await this.authRepository.findOne({
+        where: { id },
+      });
+
+    if (previousIps === null) {
+      previousIps = [data.ipUsed];
+    } else if (previousIps !== null && !previousIps.includes(data.ipUsed)) {
+      previousIps = [...previousIps, data.ipUsed];
+    }
+
+    const updateResponse = await this.authRepository.update(id, {
+      ipUsed: data.ipUsed,
+      previousIps,
+    });
+    return updateResponse;
   }
 
   remove(id: number) {
