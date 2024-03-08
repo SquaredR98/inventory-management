@@ -11,6 +11,7 @@ import { Auth } from './auth/entities/auth.entity';
 import { RolesModule } from './roles/roles.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppRequestMonitor } from './middlewares/AppLogMiddleware';
+import { Roles } from './roles/entities/role.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { AppRequestMonitor } from './middlewares/AppLogMiddleware';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => dataSourceOptions,
     }),
-    TypeOrmModule.forFeature([User, Auth]),
+    TypeOrmModule.forFeature([User, Auth, Roles]),
     UsersModule,
     LoggerModule,
     AuthModule,

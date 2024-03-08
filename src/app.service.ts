@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Auth } from './auth/entities/auth.entity';
+import { Roles } from './roles/entities/role.entity';
 
 @Injectable()
 export class AppService {
@@ -11,11 +12,15 @@ export class AppService {
     private userRepository: Repository<User>,
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
+    @InjectRepository(Roles)
+    private rolesRepository: Repository<Roles>,
   ) {
     async function createAdminUser() {
       let adminUser = await userRepository.findOne({
         where: { email: 'admin@admin.com' },
+        relations: ['auth', 'auth.role']
       });
+      Logger.log({adminUser});
 
       if (adminUser) {
         Logger.log('Admin exists avoiding admin creation', 'AppModule');
@@ -23,6 +28,7 @@ export class AppService {
         Logger.log('Admin not found. Creating a new one', 'AppModule');
         
         const date: Date = new Date();
+        const role: Roles = await rolesRepository.findOne({ where: { value: 'SUPER_ADMIN' } })
         const authId =
           'IM_USER_' +
           date.toISOString().slice(0, 10).split('-').join('') +
@@ -37,6 +43,7 @@ export class AppService {
         const adminAuthData = await authRepository.save({
           authUserId: authId,
           password: 'password',
+          role
         });
         
         const adminUserData = await userRepository.save({
@@ -45,10 +52,13 @@ export class AppService {
           phoneNumber: '9999999999',
           auth: adminAuthData
         });
+
+        Logger.log({ ...adminAuthData, adminUserData }, 'AppService')
       }
     }
 
-    createAdminUser();
+    setTimeout(() => createAdminUser(), 1000);
+    
   }
 
   getHello(): string {
