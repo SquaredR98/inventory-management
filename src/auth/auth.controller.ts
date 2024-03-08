@@ -1,19 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginDto } from './dto/login.dto';
+
+import * as bcrypt from 'bcrypt';
+import { Auth } from './entities/auth.entity';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
-  login(@Body() loginDto: LoginDto) {
+  async login(@Body() loginDto: LoginDto): Promise<Auth> {
     const { authId, password } = loginDto;
+    const userExist = await this.authService.findOne(authId);
+
+    if (!userExist) throw new NotFoundException('User not found.');
+
+    const isPasswordVerified: boolean = bcrypt.compareSync(
+      password,
+      userExist.password,
+    );
+
+    if (!isPasswordVerified)
+      throw new UnauthorizedException('Credentials are not correct.');
+
+    return userExist;
   }
 
-  @Post()
+  @Post('add-user')
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.addUser(createAuthDto);
   }
@@ -25,7 +51,7 @@ export class AuthController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+    return this.authService.findOne(id);
   }
 
   @Patch(':id')

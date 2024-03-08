@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "../../database/base-entity";
 import { User } from "../../users/entities/user.entity";
 import { Exclude } from "class-transformer";
+import { Roles } from "../../roles/entities/role.entity";
 
 @Entity({ name: 'Auth' })
 export class Auth extends BaseEntity {
@@ -29,4 +30,7 @@ export class Auth extends BaseEntity {
   @OneToOne(() => User, (user: User) => user.auth)
   @Exclude()
   user: User
+
+  @ManyToOne(() => Roles, (role: Roles) => role.auth)
+  role: Roles
 }

@@ -51,8 +51,8 @@ export class AuthService {
     return `This action returns all auth`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  async findOne(id: string) {
+    return await this.authRepository.findOne({ where: { authUserId: id } });
   }
 
   update(id: number, updateAuthDto: UpdateAuthDto) {

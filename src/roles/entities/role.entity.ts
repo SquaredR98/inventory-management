@@ -1,5 +1,6 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "../../database/base-entity";
+import { Auth } from "../../auth/entities/auth.entity";
 
 export class Roles extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -13,4 +14,7 @@ export class Roles extends BaseEntity {
 
   @Column()
   value: string;
+
+  @OneToMany(() => Auth, (auth: Auth) => auth.role)
+  auth: Auth;
 }
