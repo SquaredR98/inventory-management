@@ -57,7 +57,7 @@ export class AuthController {
     } = userExist;
 
     const jwt: string = await this.jwtService.signAsync({
-      userId: userExist.authId,
+      userId: userExist.uniqueAuthId,
       role: value,
     });
 

@@ -1,12 +1,13 @@
-import { Column, Entity, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { BaseEntity } from "../../database/base-entity";
 import { User } from "../../users/entities/user.entity";
 import { Roles } from "../../roles/entities/role.entity";
+import { Logger } from "../../logger/entities/logger.entity";
 
 @Entity({ name: 'Auth' })
 export class Auth extends BaseEntity {
   @Column()
-  authId: string;
+  uniqueAuthId: string;
 
   @Column()
   password: string;
@@ -31,4 +32,7 @@ export class Auth extends BaseEntity {
 
   @ManyToOne(() => Roles, (role: Roles) => role.auth)
   role: Roles
+
+  @OneToMany(() => Logger, (logger: Logger) => logger.doneBy)
+  logger: Logger;
 }

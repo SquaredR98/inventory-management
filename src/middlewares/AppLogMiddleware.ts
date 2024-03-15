@@ -3,7 +3,7 @@ import { NextFunction } from "express";
 
 @Injectable()
 export class AppRequestMonitor implements NestMiddleware {
-  private logger = new Logger('HTTP');
+  private logger = new Logger('HTTP-Request');
 
   use(request: Request, response: Response, next: NextFunction): void {
     const { method, headers, url } = request;

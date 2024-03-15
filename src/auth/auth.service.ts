@@ -25,7 +25,7 @@ export class AuthService {
       '-' +
       date.toISOString().slice(11, 23).split(':').join('').split('.').join('');
     const dataToBeSavedInAuth: Auth = {
-      authId,
+      uniqueAuthId: authId,
       password,
     } as Auth;
 
@@ -35,12 +35,12 @@ export class AuthService {
       phoneNumber,
     } as User;
 
-    savedUserData = await this.userRepository.save(dataToBeSavedInUser);
+    savedAuthData = await this.authRepository.save(dataToBeSavedInAuth);
 
-    if (savedUserData) {
-      savedAuthData = await this.authRepository.save({
-        ...dataToBeSavedInAuth,
-        userId: savedUserData.id,
+    if (savedAuthData) {
+      savedUserData = await this.userRepository.save({
+        ...dataToBeSavedInUser,
+        auth: savedAuthData,
       });
     }
 
@@ -53,7 +53,7 @@ export class AuthService {
 
   async findOne(id: string) {
     return await this.authRepository.findOne({
-      where: { authId: id },
+      where: { uniqueAuthId: id },
       relations: { user: true, role: true },
     });
   }

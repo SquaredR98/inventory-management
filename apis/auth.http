@@ -1,13 +1,12 @@
 @baseUrl=http://localhost:3001
 
 ###
-POST {{baseUrl}}/auth
-Content-Type: 'application/json'
-Accept: application/json
+POST {{baseUrl}}/auth/add-user
+Content-Type: application/json
 
 {
   "email": "ravi-ranjan@mail.com",
-  "phoneNumber": "8296677889",
+  "phoneNumber": "+918989009876",
   "name": "Someone",
   "password": "password"
 }
